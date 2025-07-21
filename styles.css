@@ -169,7 +169,7 @@ h6 { font-size: var(--font-size-base); }
 
 p {
     margin-bottom: var(--space-4);
-    color: var(--color-surface);
+    color: var(--color-primary-rgb: 28, 166, 221);
 }
 
 a {
