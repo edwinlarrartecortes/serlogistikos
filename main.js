@@ -108,7 +108,7 @@ function initTypingEffect() {
     const text = typingElement.textContent;
     const speed = 100;
     let index = 0;
-
+    
     typingElement.textContent = '';
     typingElement.classList.add('typing-effect');
 
@@ -153,7 +153,7 @@ function initScrollAnimations() {
 // Botón scroll to top
 function initScrollToTop() {
     const scrollTopBtn = document.getElementById('scrollTop');
-
+    
     window.addEventListener('scroll', function() {
         if (window.scrollY > 300) {
             scrollTopBtn.classList.add('show');
@@ -173,11 +173,11 @@ function initScrollToTop() {
 // Efectos parallax
 function initParallaxEffects() {
     const parallaxElements = document.querySelectorAll('.hero-decoration');
-
+    
     window.addEventListener('scroll', function() {
         const scrolled = window.pageYOffset;
         const rate = scrolled * -0.5;
-
+        
         parallaxElements.forEach(element => {
             element.style.transform = `translateY(${rate}px)`;
         });
@@ -210,11 +210,9 @@ document.addEventListener('DOMContentLoaded', function() {
     heroButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
-            
             if (href && href.startsWith('#')) {
                 e.preventDefault();
                 const targetElement = document.querySelector(href);
-                
                 if (targetElement) {
                     const offsetTop = targetElement.offsetTop - 80;
                     window.scrollTo({
@@ -352,115 +350,72 @@ function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification notification--${type}`;
     notification.innerHTML = `
-        <div class="notification__content">
-            <span class="notification__message">${message}</span>
-            <button class="notification__close">&times;</button>
+        <div class="notification-content">
+            <i class="fas fa-${getNotificationIcon(type)}"></i>
+            <span>${message}</span>
         </div>
+        <button class="notification-close">
+            <i class="fas fa-times"></i>
+        </button>
     `;
 
-    // Agregar estilos dinámicamente
-    if (!document.querySelector('#notification-styles')) {
-        const style = document.createElement('style');
-        style.id = 'notification-styles';
-        style.textContent = `
-            .notification {
-                position: fixed;
-                top: 100px;
-                right: 20px;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-                z-index: 10000;
-                transform: translateX(100%);
-                transition: transform 0.3s ease;
-                max-width: 400px;
-            }
-            .notification--success { border-left: 4px solid var(--color-success); }
-            .notification--error { border-left: 4px solid var(--color-error); }
-            .notification--warning { border-left: 4px solid var(--color-warning); }
-            .notification--info { border-left: 4px solid var(--color-info); }
-            .notification__content {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 1rem;
-            }
-            .notification__close {
-                background: none;
-                border: none;
-                font-size: 1.5rem;
-                cursor: pointer;
-                color: #666;
-            }
-        `;
-        document.head.appendChild(style);
-    }
-
+    // Agregar a la página
     document.body.appendChild(notification);
 
     // Mostrar notificación
     setTimeout(() => {
-        notification.style.transform = 'translateX(0)';
-    }, 100);
+        notification.classList.add('show');
+    }, 10);
 
-    // Cerrar notificación
-    const closeBtn = notification.querySelector('.notification__close');
-    closeBtn.addEventListener('click', () => {
-        notification.style.transform = 'translateX(100%)';
-        setTimeout(() => notification.remove(), 300);
-    });
-
-    // Auto-cerrar después de 5 segundos
+    // Auto-remover después de 5 segundos
     setTimeout(() => {
-        if (notification.parentNode) {
-            notification.style.transform = 'translateX(100%)';
-            setTimeout(() => notification.remove(), 300);
-        }
+        hideNotification(notification);
     }, 5000);
+
+    // Cerrar al hacer clic
+    notification.querySelector('.notification-close').addEventListener('click', () => {
+        hideNotification(notification);
+    });
 }
 
-// Funciones de utilidad
-const utils = {
-    // Debounce para optimización
-    debounce: (func, wait) => {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    },
-
-    // Función para detectar dispositivo móvil
-    isMobile: () => {
-        return window.innerWidth <= 768;
-    },
-
-    // Función para obtener posición de un elemento
-    getOffset: (element) => {
-        const rect = element.getBoundingClientRect();
-        return {
-            top: rect.top + window.scrollY,
-            left: rect.left + window.scrollX
-        };
+function hideNotification(notification) {
+    if (notification && notification.parentNode) {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 400);
     }
-};
+}
+
+function getNotificationIcon(type) {
+    switch(type) {
+        case 'success': return 'check-circle';
+        case 'error': return 'exclamation-circle';
+        case 'warning': return 'exclamation-triangle';
+        default: return 'info-circle';
+    }
+}
+
+// Optimización de rendimiento - debounce para resize
+window.addEventListener('resize', throttle(function() {
+    // Reajustar elementos si es necesario
+    initScrollAnimations();
+}, 250));
+
+// Prevenir errores en consola
+window.addEventListener('error', function(e) {
+    console.warn('Error capturado:', e.message);
+});
 
 // Inicialización final
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Ser Logistikos - Sitio web cargado correctamente');
-    
-    // Verificar que todos los elementos críticos estén presentes
-    const criticalElements = ['navbar', 'hamburger', 'nav-menu', 'scrollTop'];
-    const missingElements = criticalElements.filter(id => !document.getElementById(id));
-    
-    if (missingElements.length > 0) {
-        console.warn('⚠️ Elementos faltantes:', missingElements);
+    // Verificar si todas las funciones están disponibles
+    if (supportsAnimations()) {
+        document.body.classList.add('animations-supported');
     }
-
-    // Mostrar notificación de bienvenida (opcional)
-    // showNotification('¡Bienvenido a Ser Logistikos!', 'success');
+    
+    // Agregar clase para indicar que JS está cargado
+    document.body.classList.add('js-loaded');
 });
