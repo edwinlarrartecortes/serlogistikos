@@ -342,11 +342,14 @@ a:hover {
 }
 
 .logo img {
-    border-radius: var(--radius-base);
-    box-shadow: var(--shadow-sm);
-    max-width: 100%;
-    max-height: 40px;                 /* Limita el tamaño de la imagen */
+  max-height: 52px;
+  width: auto;
+  padding: 4px 16px 4px 4px;
+  background: white; /* Si el logo tiene fondo transparente, ayuda a destacar */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(28, 166, 221, 0.08);
 }
+
 
 .logo h2 {
     color: var(--color-primary);
