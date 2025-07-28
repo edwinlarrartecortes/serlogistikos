@@ -355,7 +355,7 @@ a:hover {
 
 .logo img {
     /* 🎯 LOGO DE 300PX COMO SOLICITASTE */
-    max-height: 250px;               /* Tu tamaño deseado */
+    max-height: 200px;               /* Tu tamaño deseado */
     width: auto;
     
     /* 🔧 CONTROL TOTAL PARA EVITAR DEFORMACIÓN */
