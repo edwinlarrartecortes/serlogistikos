@@ -7,7 +7,7 @@
 */
 :root {
     /* Altura fija de la barra de navegación (navbar) */
-    --navbar-height: 320px; /* Nueva altura para logo de 300px */
+    --navbar-height: 150px; /* Nueva altura para logo de 300px */
 
 
     /* Colores principales (basados en tu logo) */
@@ -355,7 +355,7 @@ a:hover {
 
 .logo img {
     /* 🎯 LOGO DE 300PX COMO SOLICITASTE */
-    max-height: 300px;               /* Tu tamaño deseado */
+    max-height: 250px;               /* Tu tamaño deseado */
     width: auto;
     
     /* 🔧 CONTROL TOTAL PARA EVITAR DEFORMACIÓN */
