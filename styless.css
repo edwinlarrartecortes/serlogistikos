@@ -318,7 +318,8 @@ a:hover {
     border-bottom: 1px solid var(--color-border);
     transition: all var(--duration-normal) var(--ease-standard);
     height: var(--navbar-height);     /* 320px automático */
-    overflow: hidden;                 /* EVITA DESBORDAMIENTO */
+    overflow: visible;
+    -webkit-overflow-scrolling: touch;                /* EVITA DESBORDAMIENTO */
     
     /* NUEVO: Centrado vertical del contenido */
     display: flex;
@@ -434,26 +435,24 @@ a:hover {
     display: none;
     flex-direction: column;
     cursor: pointer;
-    gap: 6px;                          /* ⬆️ AUMENTADO de 4px a 6px */
-    padding: 8px;                      /* ➕ AÑADIDO: Área táctil más grande */
-    border-radius: 4px;                /* ➕ AÑADIDO: Bordes redondeados */
-    transition: all var(--duration-normal) var(--ease-standard);
+    gap: 6px;
+    padding: 12px 8px;
+    position: relative;
+    z-index: 1002;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
-
-/* Hover para mejor feedback visual */
-.hamburger:hover {
-    background: rgba(28, 166, 221, 0.1);
-}
-
 
 .hamburger span {
-    width: 30px;                       /* ⬆️ AUMENTADO de 25px a 30px */
-    height: 4px;                       /* ⬆️ AUMENTADO de 3px a 4px */
+    width: 32px;           /* MÁS GRANDE */
+    height: 4px;           /* MÁS VISIBLE */
     background: var(--color-text);
-    border-radius: 3px;                /* ⬆️ AUMENTADO de 2px a 3px */
-    transition: all var(--duration-normal) var(--ease-standard);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* ➕ AÑADIDO: Sombra para contraste */
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    transform-origin: center;
 }
+
 
 
 /* Animación del menú hamburguesa al activarse */
@@ -1033,36 +1032,41 @@ a:hover {
     /* Menú desplegable oculto por defecto */
     .nav-menu {
     position: fixed;
-    top: var(--navbar-height);        /* Justo debajo del navbar */
+    top: var(--navbar-height);
     left: 0;
     right: 0;
     background: var(--color-surface);
     flex-direction: column;
-    padding: var(--space-6) var(--space-4);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15); /* ⬆️ MEJORADO: Sombra más fuerte */
-
-    /* ANIMACIÓN MEJORADA */
-    transform: translateY(-100%);
+    padding: 0;
+    
+    /* 🎯 POSITIONING CRÍTICO */
+    z-index: 1001;
+    max-height: 0;                    /* EN LUGAR DE TRANSFORM */
+    overflow: hidden;
     opacity: 0;
     visibility: hidden;
-
-    /* Z-INDEX CRÍTICO */
-    z-index: 999;                     /* ⚡ CRÍTICO: Asegura que aparezca sobre todo */
-
-    /* TRANSICIÓN OPTIMIZADA */
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
-    /* BORDE SUPERIOR SUTIL */
-    border-top: 2px solid var(--color-primary);
+    
+    /* 🚀 TRANSICIÓN OPTIMIZADA PARA IOS */
+    transition: 
+        max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+    
+    box-shadow: 0 8px 32px rgba(28, 166, 221, 0.15);
+    border-bottom: 2px solid var(--color-primary);
+    
+    /* iOS específico */
+    -webkit-overflow-scrolling: touch;
+    -webkit-transform: translate3d(0, 0, 0);
+    will-change: max-height, opacity;
 }
 
+.nav-menu.active {
+    max-height: 400px;                /* MENÚ COMPLETAMENTE VISIBLE */
+    opacity: 1;
+    visibility: visible;
+}
 
-    /* Menú desplegable visible al activarse */
-    .nav-menu.active {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
-    }
 /* ENLACES DEL MENÚ EN MÓVIL */
 .nav-menu li {
     margin: 0;                        /* Reset margin */
