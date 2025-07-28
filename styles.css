@@ -7,7 +7,8 @@
 */
 :root {
     /* Altura fija de la barra de navegación (navbar) */
-    --navbar-height: 68px;
+    --navbar-height: 200px; /* Nueva altura para logo de 300px */
+
 
     /* Colores principales (basados en tu logo) */
     --color-primary: #1CA6DD;               /* Azul principal */
@@ -307,17 +308,23 @@ a:hover {
   ================
 */
 .navbar {
-    position: fixed;                  /* Fija en la parte superior */
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;                    /* Siempre sobre otros elementos */
+    z-index: 1000;
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);      /* Efecto de desenfoque de fondo */
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--color-border);
     transition: all var(--duration-normal) var(--ease-standard);
-    height: var(--navbar-height);     /* Altura fija definida en :root */
+    height: var(--navbar-height);     /* 320px automático */
+    overflow: hidden;                 /* EVITA DESBORDAMIENTO */
+    
+    /* NUEVO: Centrado vertical del contenido */
+    display: flex;
+    align-items: center;
 }
+
 
 /* Efecto al hacer scroll (navbar más opaca con sombra) */
 .navbar.scrolled {
@@ -330,25 +337,46 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     padding: var(--space-4) 0;
-    min-height: var(--navbar-height); /* Asegura altura mínima */
+    min-height: var(--navbar-height); /* 320px */
 }
 
-/* Estilos del logotipo (imagen + texto) */
+
 .logo {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: var(--space-2);
+    flex-shrink: 0;
+    height: 100%; /* Usa toda la altura disponible */
 }
 
 .logo img {
-  max-height: 52px;
-  width: auto;
-  padding: 4px 16px 4px 4px;
-  background: white; /* Si el logo tiene fondo transparente, ayuda a destacar */
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(28, 166, 221, 0.08);
+    /* 🎯 LOGO DE 300PX COMO SOLICITASTE */
+    max-height: 300px;               /* Tu tamaño deseado */
+    width: auto;
+    
+    /* 🔧 CONTROL TOTAL PARA EVITAR DEFORMACIÓN */
+    object-fit: contain;             /* MANTIENE PROPORCIONES */
+    flex-shrink: 0;                  /* NO SE COMPRIME */
+    
+    /* 🎨 ESTILOS MEJORADOS PARA INTEGRACIÓN */
+    padding: 10px 30px 10px 10px;
+    background: transparent;          /* SIN FONDO BLANCO */
+    border-radius: 20px;
+    filter: drop-shadow(0 8px 32px rgba(28, 166, 221, 0.15));
+    transition: all var(--duration-normal) var(--ease-standard);
 }
+
+/* ✨ EFECTO HOVER PROFESIONAL */
+.logo:hover img {
+    transform: scale(1.02);
+    filter: drop-shadow(0 12px 40px rgba(28, 166, 221, 0.25));
+}
+
+
+
 
 
 .logo h2 {
@@ -1070,8 +1098,12 @@ a:hover {
     }
 
     .logo img {
-        max-height: 40px;             /* Limita la altura máxima del logo */
-    }
+    max-height: 210px; /* 70% del tamaño desktop */
+    padding: 8px 24px 8px 8px;
+    border-radius: 16px;
+}
+
+
 
     .logo h2 {
         font-size: var(--font-size-lg);  /* Texto más pequeño */
@@ -1122,8 +1154,12 @@ a:hover {
     }
 
     .logo img {
-        max-height: 32px;
-    }
+    max-height: 150px; /* 50% del tamaño desktop */
+    padding: 6px 18px 6px 6px;
+    border-radius: 12px;
+}
+
+
 }
 
 /*
