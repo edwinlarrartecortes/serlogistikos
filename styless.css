@@ -670,7 +670,7 @@ a:hover {
     height: 80px;
     margin: 0 auto var(--space-6);
     background: var(--gradient-primary);
-    border-radius: 50%;
+    border-radius: 150%;
     display: flex;
     align-items: center;
     justify-content: center;
